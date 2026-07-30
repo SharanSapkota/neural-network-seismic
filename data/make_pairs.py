@@ -16,7 +16,7 @@ def haversine(lat1, lon1, lat2, lon2):
     dlon = math.radians(lon2 - lon1)
     dlat = lat2 - lat1
     a = math.sin(dlat/2)**2 + math.cos(lat1)*math.cos(lat2)*math.sin(dlon/2)**2
-    return R * 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
+    return R * 2 * math.atan2(math.sqrt(a), math.sqrt(1-a)) 
 
 
 def load_distances(receivers_path):
@@ -59,7 +59,7 @@ def build_pairs(distances, rng,
 
     return (np.array(noisy_all, dtype=np.float32),
             np.array(clean_all, dtype=np.float32),
-            np.array(level_all, dtype=np.float32))
+            np.array(level_all, dtype=np.float32)) # (distance X n_noise_per_ccf, 1001) [if distance is 10, 10 X 5, 1001]
 
 def build_out_of_range_test(distances, rng, levels=(0.02, 0.90),
                             noise_fn=add_noise):
