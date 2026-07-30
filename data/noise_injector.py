@@ -3,7 +3,7 @@ import numpy as np
 from earth_model import FS, FREQ_MIN, FREQ_MAX
 
 def add_noise(clean, noise_level, rng):
-    noise = rng.normal(0.0, noise_level, size=len(clean))
+    noise = rng.normal(0.0, noise_level, size=len(clean)) # (mean, std, size)
     noisy = clean + noise
     return noisy.astype(np.float32), np.float32(noise_level)
 

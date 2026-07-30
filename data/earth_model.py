@@ -20,18 +20,18 @@ def dam_model():
     return np.column_stack([thickness_km, vp_km_s, vs_km_s, density_g_cm3])
 
 def true_dispersion(model):
-    periods = np.linspace(1.0 / FREQ_MAX, 1.0 / FREQ_MIN, N_FREQ)
+    periods = np.linspace(1.0 / FREQ_MAX, 1.0 / FREQ_MIN, N_FREQ) #40
 
     pd = PhaseDispersion(*model.T)
     res = pd(periods, mode=0, wave="rayleigh")
 
     if len(res.period) < N_FREQ:
-        print(f"you need full-band coverage.")
+        print(len(res.period))
 
     freqs = 1.0 / res.period
     vels = res.velocity * 1000.0
     order = np.argsort(freqs)
-    return freqs[order], vels[order]
+    return freqs[order], vels[order] #both length should be N_FREQ
 
 
 def true_group_velocity(model, freqs):
@@ -47,7 +47,7 @@ def true_group_velocity(model, freqs):
     return np.interp(freqs, g_freqs[order], g_vels[order])
 
 def synth_ccf(freqs, phase_vels, group_vels, distance_m):
-    lag = (np.arange(N_SAMPLES) - N_SAMPLES // 2) / FS  
+    lag = (np.arange(N_SAMPLES) - N_SAMPLES // 2) / FS   # 1001 values ranging from −1 s to +1 s with a spacing of
     lag_abs = np.abs(lag)
 
     sig = np.zeros(N_SAMPLES)
