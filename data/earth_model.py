@@ -20,7 +20,7 @@ def dam_model():
     return np.column_stack([thickness_km, vp_km_s, vs_km_s, density_g_cm3])
 
 def true_dispersion(model):
-    periods = np.linspace(1.0 / FREQ_MAX, 1.0 / FREQ_MIN, N_FREQ) #40
+    periods = np.linspace(1.0 / FREQ_MAX, 1.0 / FREQ_MIN, N_FREQ) #40   f = 1/t (perid-frequency relationship)
 
     pd = PhaseDispersion(*model.T)
     res = pd(periods, mode=0, wave="rayleigh")
@@ -35,7 +35,7 @@ def true_dispersion(model):
 
 
 def true_group_velocity(model, freqs):
-    periods = 1.0 / freqs
+    periods = np.sort(1.0 / freqs)
 
     gd = GroupDispersion(*model.T)
     res = gd(periods, mode=0, wave="rayleigh")
@@ -57,7 +57,7 @@ def synth_ccf(freqs, phase_vels, group_vels, distance_m):
         t_phase = distance_m / v_phase 
 
         width = 2.0 / f  
-        envelope    = np.exp(-0.5 * ((lag_abs - t_group) / width) ** 2)
+        envelope    = np.exp(-0.5 * ((lag_abs - t_group) / width) ** 2) # Gaussian envelope formula
         oscillation = np.sin(2.0 * np.pi * f * (lag_abs - t_phase))
 
         sig += envelope * oscillation
